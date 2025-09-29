@@ -1,37 +1,38 @@
 [
  null,
  {
-  "Kertas Kerja Penerimaan Sewa": "Periode September 2025"
+  "Kertas Kerja Penerimaan": "Periode Juli s.d. September 2025"
  },
  null,
  {
-  "Kertas Kerja Penerimaan Sewa": "Total Tahun 2024"
+  "Kertas Kerja Penerimaan": "Total Tahun 2024"
  },
  null,
  {
-  "Kertas Kerja Penerimaan Sewa": 0
+  "Kertas Kerja Penerimaan": 0
  },
  null,
  {
-  "Kertas Kerja Penerimaan Sewa": "Total Tahun 2025"
+  "Kertas Kerja Penerimaan": "Total Tahun 2025"
  },
  null,
  {
-  "Kertas Kerja Penerimaan Sewa": 0
+  "Kertas Kerja Penerimaan": 0
  },
  null,
  {
-  "Kertas Kerja Penerimaan Sewa": "Total Semua"
+  "Kertas Kerja Penerimaan": "Total Semua"
  },
  null,
  {
-  "Kertas Kerja Penerimaan Sewa": 0
+  "Kertas Kerja Penerimaan": 0
  },
  {
-  "Kertas Kerja Penerimaan Sewa": "-- Pilih Bulan --                    -- Pilih Tanggal Setoran --            Reset "
+  "Kertas Kerja Penerimaan": "-- Pilih Bulan --                    -- Pilih Tanggal Setoran --            Reset "
  },
+ null,
  {
-  "Kertas Kerja Penerimaan Sewa": "No",
+  "Kertas Kerja Penerimaan": "No",
   "Column2": "Tanggal Setoran",
   "Column3": "No. Referensi IBB",
   "Column4": "No. STS",
@@ -44,7 +45,7 @@
   "Column11": "Total Pembayaran (Rp)"
  },
  {
-  "Kertas Kerja Penerimaan Sewa": "TOTAL",
+  "Kertas Kerja Penerimaan": "TOTAL",
   "Column8": 0,
   "Column10": 0,
   "Column11": 0
