@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Kertas Kerja Penerimaan Sewa</title>
+  <title>KK SEWA</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #1e1e1e; color: #ddd; }
     h2 { text-align: center; margin: 10px 0 5px; color: #fff; }
@@ -36,45 +36,62 @@
     .card h3 { margin: 0 0 5px; font-size: 16px; color: #ffcc00; }
     .card p { margin: 0; font-size: 18px; font-weight: bold; color: #fff; }
 
-    .filter-bar { text-align: center; margin-bottom: 10px; }
+    .filter-bar { text-align: center; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
     input[type=text], select {
-      padding: 6px;
-      margin: 5px;
+      padding: 8px;
       border: 1px solid #666;
       border-radius: 5px;
       background: #2a2a2a;
       color: #eee;
+      flex: 1 1 200px;
+      max-width: 250px;
     }
     button {
-      padding: 6px 12px;
-      margin: 5px;
+      padding: 8px 14px;
       border: none;
       border-radius: 5px;
       background: #444;
       color: #fff;
       cursor: pointer;
+      flex: 1 1 auto;
+      max-width: 120px;
     }
     button:hover {
       background: #555;
     }
 
-    table { border-collapse: collapse; width: 100%; background: #2a2a2a; color: #ddd; }
+    /* Kontainer tabel responsif */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table { border-collapse: collapse; width: 100%; background: #2a2a2a; color: #ddd; min-width: 900px; }
     th, td { border: 1px solid #444; padding: 6px; text-align: center; font-size: 14px; }
     th { 
       background: #333; 
       color: #ffcc00; 
       position: sticky; 
-      top: 180px; 
+      top: 200px; 
       z-index: 90; 
     }
     tr:nth-child(even) { background: #242424; }
     tr:hover { background: #3a3a3a; }
     tfoot td { font-weight: bold; background: #333; color: #ffcc00; position: sticky; bottom: 0; z-index: 80; }
+
+    /* Responsive layout */
+    @media (max-width: 768px) {
+      .summary { flex-direction: column; }
+      .card { min-width: 100%; }
+      .filter-bar { flex-direction: column; align-items: stretch; }
+      input[type=text], select, button { max-width: 100%; }
+      th, td { font-size: 12px; padding: 4px; }
+    }
   </style>
 </head>
 <body>
-  <h2>Kertas Kerja Penerimaan Sewa</h2>
-  <h4 id="subTitle">Periode September 2025</h4>
+  <h2>Kertas Kerja Penerimaan</h2>
+  <h4 id="subTitle">Periode Juli s.d. September 2025</h4>
 
   <!-- Sticky Ringkasan + Filter -->
   <div class="sticky-header">
@@ -111,33 +128,35 @@
   </div>
 
   <!-- Tabel -->
-  <table id="dataTable">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Tanggal Setoran</th>
-        <th>No. Referensi IBB</th>
-        <th>No. STS</th>
-        <th>Nama Penghuni</th>
-        <th>No. Unit</th>
-        <th>Periode Sewa 2024</th>
-        <th>Jumlah 2024 (Rp)</th>
-        <th>Periode Sewa 2025</th>
-        <th>Jumlah 2025 (Rp)</th>
-        <th>Total Pembayaran (Rp)</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-    <tfoot>
-      <tr>
-        <td colspan="7">TOTAL</td>
-        <td id="total2024">0</td>
-        <td></td>
-        <td id="total2025">0</td>
-        <td id="totalAll">0</td>
-      </tr>
-    </tfoot>
-  </table>
+  <div class="table-container">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Tanggal Setoran</th>
+          <th>No. Referensi IBB</th>
+          <th>No. STS</th>
+          <th>Nama Penghuni</th>
+          <th>No. Unit</th>
+          <th>Periode Sewa 2024</th>
+          <th>Jumlah 2024 (Rp)</th>
+          <th>Periode Sewa 2025</th>
+          <th>Jumlah 2025 (Rp)</th>
+          <th>Total Pembayaran (Rp)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7">TOTAL</td>
+          <td id="total2024">0</td>
+          <td></td>
+          <td id="total2025">0</td>
+          <td id="totalAll">0</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 
   <script>
     const csvData = `Tanggal Setoran,No. Referensi IBB,No. STS,Nama Penghuni,No. Unit,Periode 2024,Jumlah 2024,Periode 2025,Jumlah 2025
