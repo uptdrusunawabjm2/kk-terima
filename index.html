@@ -8,78 +8,28 @@
     h2 { text-align: center; margin: 10px 0 5px; color: #fff; }
     h4 { text-align: center; margin: 0 0 15px; font-weight: normal; color: #bbb; }
 
-    /* Kontainer sticky ringkasan + filter */
-    .sticky-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: #252525;
-      padding: 10px;
-      border-bottom: 2px solid #444;
-    }
-
-    .summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 10px;
-    }
-    .card {
-      flex: 1;
-      min-width: 200px;
-      background: #2e2e2e;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      color: #eee;
-    }
+    .sticky-header { position: sticky; top: 0; z-index: 100; background: #252525; padding: 10px; border-bottom: 2px solid #444; }
+    .summary { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 10px; }
+    .card { flex: 1; min-width: 200px; background: #2e2e2e; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); color: #eee; }
     .card h3 { margin: 0 0 5px; font-size: 16px; color: #ffcc00; }
     .card p { margin: 0; font-size: 18px; font-weight: bold; color: #fff; }
 
     .filter-bar { text-align: center; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
     input[type=text], select {
-      padding: 8px;
-      border: 1px solid #666;
-      border-radius: 5px;
-      background: #2a2a2a;
-      color: #eee;
-      flex: 1 1 200px;
-      max-width: 250px;
+      padding: 8px; border: 1px solid #666; border-radius: 5px;
+      background: #2a2a2a; color: #eee; flex: 1 1 200px; max-width: 250px;
     }
-    button {
-      padding: 8px 14px;
-      border: none;
-      border-radius: 5px;
-      background: #444;
-      color: #fff;
-      cursor: pointer;
-      flex: 1 1 auto;
-      max-width: 120px;
-    }
-    button:hover {
-      background: #555;
-    }
+    button { padding: 8px 14px; border: none; border-radius: 5px; background: #444; color: #fff; cursor: pointer; flex: 1 1 auto; max-width: 120px; }
+    button:hover { background: #555; }
 
-    /* Kontainer tabel responsif */
-    .table-container {
-      width: 100%;
-      overflow-x: auto;
-    }
-
+    .table-container { width: 100%; overflow-x: auto; }
     table { border-collapse: collapse; width: 100%; background: #2a2a2a; color: #ddd; min-width: 900px; }
     th, td { border: 1px solid #444; padding: 6px; text-align: center; font-size: 14px; }
-    th { 
-      background: #333; 
-      color: #ffcc00; 
-      position: sticky; 
-      top: 0px; 
-      z-index: 90; 
-    }
+    th { background: #333; color: #ffcc00; position: sticky; top: 0px; z-index: 90; }
     tr:nth-child(even) { background: #242424; }
     tr:hover { background: #3a3a3a; }
     tfoot td { font-weight: bold; background: #333; color: #ffcc00; position: sticky; bottom: 0; z-index: 80; }
 
-    /* Responsive layout */
     @media (max-width: 768px) {
       .summary { flex-direction: column; }
       .card { min-width: 100%; }
@@ -93,41 +43,22 @@
   <h2>Kertas Kerja Penerimaan</h2>
   <h4 id="subTitle">Periode Juli s.d. September 2025</h4>
 
-  <!-- Sticky Ringkasan + Filter -->
   <div class="sticky-header">
-    <!-- Ringkasan -->
     <div class="summary">
-      <div class="card">
-        <h3>Total Tahun 2024</h3>
-        <p id="summary2024">0</p>
-      </div>
-      <div class="card">
-        <h3>Total Tahun 2025</h3>
-        <p id="summary2025">0</p>
-      </div>
-      <div class="card">
-        <h3>Total Semua</h3>
-        <p id="summaryAll">0</p>
-      </div>
+      <div class="card"><h3>Total Tahun 2024</h3><p id="summary2024">0</p></div>
+      <div class="card"><h3>Total Tahun 2025</h3><p id="summary2025">0</p></div>
+      <div class="card"><h3>Total Semua</h3><p id="summaryAll">0</p></div>
+      <!-- Ringkasan khusus bulan -->
+      <div class="card"><h3 id="monthTitle">Total Semua (Bulan)</h3><p id="summaryAllMonth">0</p></div>
     </div>
-
-    <!-- Ringkasan per tanggal/bulan -->
-    <div class="summary" id="summaryByDate"></div>
-
-    <!-- Filter bar -->
     <div class="filter-bar">
-      <input type="text" id="searchInput" placeholder="Cari data...">
-      <select id="monthDropdown" onchange="applyFilter()">
-        <option value="">-- Pilih Bulan --</option>
-      </select>
-      <select id="dateDropdown" onchange="applyFilter()">
-        <option value="">-- Pilih Tanggal Setoran --</option>
-      </select>
+      <input type="text" id="searchInput" placeholder="Cari data..." oninput="applyFilter()">
+      <select id="monthDropdown" onchange="applyFilter()"><option value="">-- Pilih Bulan --</option></select>
+      <select id="dateDropdown" onchange="applyFilter()"><option value="">-- Pilih Tanggal Setoran --</option></select>
       <button onclick="resetFilter()">Reset</button>
     </div>
   </div>
 
-  <!-- Tabel -->
   <div class="table-container">
     <table id="dataTable">
       <thead>
@@ -159,6 +90,7 @@
   </div>
 
   <script>
+    // Data dummy
     const csvData = `Tanggal Setoran,No. Referensi IBB,No. STS,Nama Penghuni,No. Unit,Periode 2024,Jumlah 2024,Periode 2025,Jumlah 2025
 01/07/2025	,TT251821Z37X,71,RINTO,313,0,0,JUN25,510000
 01/07/2025	,TT251821MXP3,71,NORDIANA,415,0,0,JUN25,459000
@@ -201,14 +133,14 @@
 07/07/2025	,TT25188SCHX5 ,74,MUHAMMAD SALEH,C2.13,0,0,JAN25;FEB25;MAR25,826200
 07/07/2025	,TT25188TBWSD ,74,A. RIYADI,B4.07,SEP24;OKT24;NOP24;DES24,489600,0,0
 07/07/2025	,TT2518828TJC,74,HUSNI,B4.17,OKT24;NOP24;DES24,367200,JAN25,122400
-07/07/2025	,TT25188J48P4,74,NASRULLAH,A1.08,0,0,JAN-25;FEB-25;MAR-25,387600
+07/07/2025	,TT25188J48P4,74,NASRULLAH,A1.08,0,0,JAN25;FEB25;MAR25,387600
 07/07/2025	,TT25188LH2R1,74,NOR HAIRI,C2.04,0,0,APR25,275400
 07/07/2025	,TT25188PQ8BD ,74,SUBHAN ALFIAN,A2.20,0,0,APR25,173400
 07/07/2025	,TT251884ZTDZ ,74,MUHAMMAD RAHIM ASY SYARIFI,A2.23,0,0,APR25,173400
 07/07/2025	,FT251886N2T0,75,LAILY NOOR HIDAYAH,310,0,0,JUL25,500000
 08/07/2025	,FT2518922TLB,75,RIFQI MUHARRAM,216,0,0,JUL25,550000
 08/07/2025	,TT25189T1H2C ,75,BAIHAKI H.,103,0,0,JUL25,600000
-08/07/2025	,TT25189BZS9X ,75,MAHDIAN NOOR,A2.24,0,0,APR-25,173400
+08/07/2025	,TT25189BZS9X ,75,MAHDIAN NOOR,A2.24,0,0,APR25,173400
 08/07/2025	,TT25189DP80B ,75,MUHAMAD ARIFIN,B2.09,0,0,JAN25;FEB25,346800
 08/07/2025	,TT25189Y5T6B ,75,NOOR MEGAWATI,B3.02,0,0,JAN25;FEB25,306000
 08/07/2025	,TT25189YCND3 ,75,FATHUR RAHMAN,A3.16,NOP24;DES24,306000,0,0
@@ -314,9 +246,9 @@
 31/07/2025	,FT25212JHXHL ,89,BAHRUDIN,C1.19,SEP24;OKT24;NOP24,887400,0,0
 31/07/2025	,FT252123RZ94 ,89,MUHAMMAD ROBBY FAUZAN,212,0,0,JUL25,561000
 31/07/2025	,FT252121NGHC ,89,MUHAMMAD SYARWANI ABDAN,312,0,0,JUN25;JUL25,1020000
-04/08/2025	,FT25216NTCK1,90,M. ARDIANI,B3.19,0,0,JUN25;JUL25,306000
+04/08/2025	,FT25216NTCK1,90,M. ARDIANI,B3.19,0,0,JUN25,JUL25,306000
 04/08/2025	,FT25216ZNTGY ,90,FAJERIANSYAH,B3.13,0,0,JUN25,153000
-04/08/2025	,TT252160QZ9R ,90,M. YAMANI,A2.18,0,0,JUL25;AGU25,343400
+04/08/2025	,TT252160QZ9R ,90,M. YAMANI,A2.18,0,0,JUL25,AGU25,343400
 04/08/2025	,FT252165LYR0,90,ALIANSYAH,C2.16,0,0,JUL25,275400
 04/08/2025	,FT252165GL3F,90,AKHMADI,B1.11,0,0,AGU25,190000
 04/08/2025	,FT25216BYQ3Q ,90,DESIAN HANZARIZKI,C1.02,0,0,JUL25,295800
@@ -338,8 +270,8 @@
 05/08/2025	,FT252176Z7S7,91,MUHAMMAD ARI MAULANA KUSUMA,214,0,0,AGU25,550000
 05/08/2025	,FT25217G1JY5,91,SUBIHI YANNOOR,B2.12,0,0,AGU25,170000
 05/08/2025	,FT25217FK2MS ,91,IRFAN RIZKI FADILLAH,B2.13,0,0,AGU25,170000
-05/08/2025	,FT25217LL0PH,91,TATI AISYAH,A3.09,0,0,JUL25;AGU25,303000
-05/08/2025	,FT25217BL00L,91,HUSIN,B2.03,0,0,APR25;MEI25,346800
+05/08/2025	,FT25217LL0PH,91,TATI AISYAH,A3.09,0,0,JUL25,AGU25,303000
+05/08/2025	,FT25217BL00L,91,HUSIN,B2.03,0,0,APR25,MEI25,346800
 05/08/2025	,FT25217P5BCD,91,SARLAN,C3.24,0,0,AGU25,250000
 05/08/2025	,FT25217ZSSJH,91,RIDUAN NOR,C3.14,0,0,AGU25,250000
 05/08/2025	,FT252179JH00,91,ARMAIN,411,0,0,AGU25,450000
@@ -350,23 +282,23 @@
 06/08/2025	,FT25218FPTQK ,92,DARMAYANTO,C3.20,0,0,JUN25,255000
 06/08/2025	,FT252181L4QH ,92,FAISAL,A1.11,0,0,AGU25,190000
 06/08/2025	,FT25218B10P7,92,H. AKHYAR RIJANI,B1.09,0,0,AGU25,190000
-06/08/2025	,FT25218N3DS4 ,92,MUHAMMAD SYAIBAN,A1.15,0,0,APR25;MEI25;JUN25;JUL25;AGU25,965200
+06/08/2025	,FT25218N3DS4 ,92,MUHAMMAD SYAIBAN,A1.15,0,0,APR25,MEI25,JUN25,JUL25,AGU25,965200
 06/08/2025	,FT2521881NQ8 ,92,AHMAD RIFQI BADALI,B2.16,0,0,AGU25,170000
 06/08/2025	,FT25218Z5KCV ,92,MUHAMMAD RIFAI'E,311,0,0,AGU25,500000
-06/08/2025	,TT252186WRFN ,92,SUTARNO,B1.06,0,0,APR25;MEI25,387600
+06/08/2025	,TT252186WRFN ,92,SUTARNO,B1.06,0,0,APR25,MEI25,387600
 06/08/2025	,FT25218N7KFH ,92,AHMAD NUR MAULIDI,A1.23,0,0,AGU25,190000
 06/08/2025	,FT25218T78NS ,92,SWANTHO TJITRO WANDIRA,A1.16,0,0,AGU25,190000
 06/08/2025	,FT25218YKJKZ ,92,PURWANTO,C3.03,0,0,JUN25,255000
 06/08/2025	,FT252181Q4Y5 ,92,ABDUL KHAIR,203,0,0,AGU25,550000
 06/08/2025	,FT25218976J6,92,ARMINA,A1.04,0,0,JUL25,193800
-06/08/2025	,FT252189SSTX ,92,MUHAMMAD SAIROJI,A3.07,0,0,JUL25;AGU25,303000
-06/08/2025	,FT25218R5SB0 ,92,SEPTESA INSAN CAESAR,A3.02,0,0,APR25;MEI25,306000
-06/08/2025	,FT25218QK97F ,92,ABDUL BAHRI,B2.11,0,0,MEI25;JUN25,346800
+06/08/2025	,FT252189SSTX ,92,MUHAMMAD SAIROJI,A3.07,0,0,JUL25,AGU25,303000
+06/08/2025	,FT25218R5SB0 ,92,SEPTESA INSAN CAESAR,A3.02,0,0,APR25,MEI25,306000
+06/08/2025	,FT25218QK97F ,92,ABDUL BAHRI,B2.11,0,0,MEI25,JUN25,346800
 06/08/2025	,FT252182J93X,92,MUHAMMAD IKBAL,416,0,0,AGU25,450000
 07/08/2025	,FT25219HPSCK,93,SATIA RAHMAN,A2.06,0,0,AGU25,170000
 07/08/2025	,FT25219N4P8Z,93,NOR HAIRI,C2.04,0,0,JUN25,275400
 07/08/2025	,FT25219QTZB4,93,HASRUL,C3.16,0,0,JUL25,255000
-07/08/2025	,FT252192VJKP,93,WAHYU RAMADHAN,B1.10,0,0,JUL25;AGU25,383800
+07/08/2025	,FT252192VJKP,93,WAHYU RAMADHAN,B1.10,0,0,JUL25,AGU25,383800
 07/08/2025	,FT252199YKCJ,93,ARBANI,207,0,0,AGU25,550000
 07/08/2025	,FT25219MWT2M ,93,IKHMAN RIFALDI,C1.03,0,0,APR25,295800
 07/08/2025	,FT25219BTZYR,93,AULIA RAHMAN,303,0,0,AGU25,500000
@@ -381,11 +313,11 @@
 11/08/2025	,TT252231HVL4,95,SALMANI,A2.12,0,0,MEI25,173400
 11/08/2025	,FT25223LMWTQ ,95,MUHAMMAD IQBAL,A3.06,0,0,MEI25,153000
 11/08/2025	,FT25223T11C8,95,AIDI ABDILLAH,B1.16,0,0,AGU25,190000
-11/08/2025	,FT25223L1TBX,95,ABDUL RASUL,C4.01,0,0,JUN25;JUL25,448800
+11/08/2025	,FT25223L1TBX,95,ABDUL RASUL,C4.01,0,0,JUN25,JUL25,448800
 11/08/2025	,FT25223ZVTJ2,95,MARIAH,B3.17,0,0,AGU25,150000
 11/08/2025	,FT25223C4F6X,95,MUHAMMAD ANDRE,B1.21,0,0,APR25,173800
 11/08/2025	,FT252232R7RM ,95,MUHAMMAD ANDRE,B1.21,0,0,APR25,20000
-11/08/2025	,FT25223HHCF1,95,RAHMAD,C1.04,0,0,JUN25;JUL25,591600
+11/08/2025	,FT25223HHCF1,95,RAHMAD,C1.04,0,0,JUN25,JUL25,591600
 11/08/2025	,FT25223B8PCD ,95,DWI FITRI YANTO,C1.08,0,0,AGU25,290000
 11/08/2025	,FT25223CCTQL ,95,SAM'ANI. H,A1.14,0,0,AGU25,190000
 11/08/2025	,FT25223MF31X,95,RIFQI MUHARRAM,216,0,0,AGU25,550000
@@ -393,11 +325,11 @@
 11/08/2025	,FT25223HKXM5 ,95,HANAPI,A4.01,0,0,JUL25,122400
 11/08/2025	,FT25223VM4GS ,95,FAUZI,A4.13,0,0,JUL25,122400
 11/08/2025	,FT25223J5KNL,95,SANUSI,C3.19,0,0,JUN25,255000
-11/08/2025	,TT25223WR0BK ,95,AHMAD YANI,C4.14,0,0,APR25;MEI25;JUN25;JUL25,897600
-11/08/2025	,TT25223L8FRL,95,AHMAD FADLIANSYAH,A1.01,0,0,MAR25;APR25;MEI25;JUN25;JUL25,969000
-11/08/2025	,TT25223WG53Z ,95,FADILAH,A1.06,0,0,MEI25;JUN25;JUL25,581400
+11/08/2025	,TT25223WR0BK ,95,AHMAD YANI,C4.14,0,0,APR25,MEI25,JUN25,JUL25,897600
+11/08/2025	,TT25223L8FRL,95,AHMAD FADLIANSYAH,A1.01,0,0,MAR25,APR25,MEI25,JUN25,JUL25,969000
+11/08/2025	,TT25223WG53Z ,95,FADILAH,A1.06,0,0,MEI25,JUN25,JUL25,581400
 12/08/2025	,TT252243D2T0 ,100,ROFIIN NOOR,306,0,0,AGU25,500000
-12/08/2025	,FT25224PWTQB ,100,AKHMAD,B3.07,0,0,JUN25;JUL25,303000
+12/08/2025	,FT25224PWTQB ,100,AKHMAD,B3.07,0,0,JUN25,JUL25,303000
 12/08/2025	,FT25224PDGJ1,100,AULIA RAHMAN,C3.09,0,0,AGU25,250000
 12/08/2025	,FT25224FVJ8S,100,ANDRE IRANI WANTO,A2.14,0,0,JUL25,173400
 12/08/2025	,FT252241C4NX ,100,PAHRURAJI,B1.14,0,0,AGUS25,193800
@@ -406,29 +338,29 @@
 13/08/2025	,FT25225P7F5Y,101,RUSMALINA,B1.08,0,0,JUN25,193800
 13/08/2025	,FT252254SNY7,101,RAHMAT,C3.22,0,0,AGU25,250000
 13/08/2025	,FT25225612DQ,101,HUSNI,B4.17,0,0,JUN25,122400
-13/08/2025	,FT25225MQ2K4 ,101,RUDI PRASETYO,A1.17,0,0,JUN25;JUL25,387600
+13/08/2025	,FT25225MQ2K4 ,101,RUDI PRASETYO,A1.17,0,0,JUN25,JUL25,387600
 13/08/2025	,TT25225TDJDF,101,AHMAD SURYANI,C4.04,0,0,JUN25,224400
-13/08/2025	,FT2522560H7F,101,ZULKIFLI,C1.18,0,0,JUL25;AGU25,585800
+13/08/2025	,FT2522560H7F,101,ZULKIFLI,C1.18,0,0,JUL25,AGU25,585800
 13/08/2025	,FT25225CFFWN ,101,MUHAMMAD RIDHANI,C2.06,0,0,AGU25,270000
 13/08/2025	,FT25225XF5YJ,101,MARTIN,A4.16,0,0,AGU25,120000
 13/08/2025	,FT25225K4GYY ,101,HUSNI,B4.17,0,0,JUL25,122400
 13/08/2025	,FT25225VDXGB ,101,ABDUL RACHMAN,B2.22,0,0,AGU25,170000
-13/08/2025	,FT25225YL8VB,101,MUHAMMAD ARBAIN,C1.12,0,0,JUL25;AGU25,585800
+13/08/2025	,FT25225YL8VB,101,MUHAMMAD ARBAIN,C1.12,0,0,JUL25,AGU25,585800
 13/08/2025	,FT25225QYN83 ,101,ANANDA RIZKY PERDANA,C1.11,0,0,AGU25,290000
 13/08/2025	,FT252259N6KH ,101,MUHAMMAD JULIANTO,C1.07,0,0,JUL25,295800
-13/08/2025	,FT25225J4MSD ,101,MUHAMMAD PATHOR RAHMAN,C3.02,0,0,JUL25;AGU25,505000
+13/08/2025	,FT25225J4MSD ,101,MUHAMMAD PATHOR RAHMAN,C3.02,0,0,JUL25,AGU25,505000
 13/08/2025	,FT25225MBV1J,101,RUDI,101,0,0,AGU25,600000
 14/08/2025	,FT25226R6C7P ,102,SYARWANI,B4.02,0,0,AGU25,120000
 14/08/2025	,FT25226VFPJ9,102,MUHAMMAD SAIDI,B3.11,0,0,AGU25,150000
 14/08/2025	,FT25226FRL2D ,102,SAINUDDIN,A2.21,0,0,AGU25,170000
 14/08/2025	,FT25226NKR1B ,102,DEWO A. BAHRUDIN,C1.21,0,0,AGU25,290000
-14/08/2025	,FT252267YDT1 ,102,NOOR MEGAWATI,B3.02,0,0,MEI25;JUN25,306000
+14/08/2025	,FT252267YDT1 ,102,NOOR MEGAWATI,B3.02,0,0,MEI25,JUN25,306000
 14/08/2025	,FT25226H76RG ,102,RUMAINUR ANWAR FUAN,C1.09,0,0,MEI25,295800
 14/08/2025	,FT2522698D7W ,102,GALIH DWI KURNIAWAN,B3.06,0,0,JUL25,153000
 14/08/2025	,FT25226F9CY4 ,102,MUHAMMAD YAMIN,C3.07,0,0,AGU25,250000
-14/08/2025	,FT25226NJ9VF ,102,MISRANI,B3.20,0,0,JUN25;JUL25,307600
+14/08/2025	,FT25226NJ9VF ,102,MISRANI,B3.20,0,0,JUN25,JUL25,307600
 14/08/2025	,FT25226NR7Z9 ,102,RAMINA,C4.19,0,0,AGU25,220000
-14/08/2025	,TT25226D55PK ,102,MARIATUL QIBTIAH,A1.13,0,0,MEI25;JUN25,387600
+14/08/2025	,TT25226D55PK ,102,MARIATUL QIBTIAH,A1.13,0,0,MEI25,JUN25,387600
 14/08/2025	,FT252263JSLW ,102,M. RAHADI,B1.02,0,0,JUL25,193800
 14/08/2025	,TT252262HB8C ,102,RAHMADI,B2.19,0,0,JUL25,173400
 14/08/2025	,TT25226X79NR ,102,ARDIANSYAH,414,0,0,AGU25,450000
@@ -439,13 +371,13 @@
 16/08/2025	,FT252287JWH9 ,104,SYARIFUDDIN,314,0,0,AGU25,500000
 19/08/2025	,TT25231SBX01 ,104,NANANG,108,0,0,AGU25,600000
 19/08/2025	,FT25231PJ3ZJ,104,SUPIYANSYAH,B3.18,0,0,JUL25,153000
-19/08/2025	,FT25231H96BS ,104,AHMAD SADIKIN,C1.01,0,0,APR25;MEI25,591600
-19/08/2025	,FT25231QR0Y7 ,104,MUHAMAD ARIFIN,B2.09,0,0,APR25;MEI25,346800
+19/08/2025	,FT25231H96BS ,104,AHMAD SADIKIN,C1.01,0,0,APR25,MEI25,591600
+19/08/2025	,FT25231QR0Y7 ,104,MUHAMAD ARIFIN,B2.09,0,0,APR25,MEI25,346800
 19/08/2025	,TT25231LZD1R,104,SAIBATUL ASLAMI,B4.14,0,0,APR25,122400
 19/08/2025	,FT25231DCL64 ,104,ARBANI YANSAH NOOR,A2.09,0,0,JUL25,173400
 19/08/2025	,FT25231GGL9K ,104,M. HERI WAHYUDI,B1.12,0,0,JUN25,193800
 19/08/2025	,FT25231NJ293 ,104,MUHAMMAD AMIN,B2.05,0,0,JUL25,173400
-19/08/2025	,FT25231WH40P ,104,NASRULLAH,A1.08,0,0,MEI25;JUN25;JUL25,581400
+19/08/2025	,FT25231WH40P ,104,NASRULLAH,A1.08,0,0,MEI25,JUN25,JUL25,581400
 19/08/2025	,FT25231GZKM1 ,104,KAMAL HUDA,406,0,0,AGU25,450000
 19/08/2025	,FT252319FCY2 ,104,ISMAIL,A2.13,0,0,JUL25,173400
 19/08/2025	,FT25231MXXB1 ,104,H. HALIS,205,0,0,AGU25,550000
@@ -458,29 +390,29 @@
 20/08/2025	,FT25232443DF ,105,MEGA HARIANUR,413,0,0,AGU25,459000
 20/08/2025	,FT25232HCKD8 ,105,SURIANSYAH,C1.06,0,0,JUL25,295800
 20/08/2025	,FT252326B8HL ,105,RAHMADI,C3.11,0,0,AGU25,250000
-20/08/2025	,FT2523244NQK ,105,AKHMAD KHAIDIR,C4.20,0,0,FEB25;MAR25;APR25;MEI25;JUN25,1122000
+20/08/2025	,FT2523244NQK ,105,AKHMAD KHAIDIR,C4.20,0,0,FEB25,MAR25,APR25,MEI25,JUN25,1122000
 20/08/2025	,FT25232HJF04 ,105,MUHAMMAD GUNTUR,C1.23,0,0,MEI25,295800
 20/08/2025	,FT252326FSV9 ,105,ARIF,B1.19,0,0,AGU25,190000
 20/08/2025	,FT25232BLYWG ,105,SAYUTI,C4.23,0,0,JUN25,224400
 20/08/2025	,FT25232HKJZ1,105,WAHYUJI,B4.15,0,0,JUL25,122400
-20/08/2025	,FT25232DBG2F ,105,ERWEN DINATA,B1.07,0,0,JUN25;JUL25,387600
+20/08/2025	,FT25232DBG2F ,105,ERWEN DINATA,B1.07,0,0,JUN25,JUL25,387600
 20/08/2025	,FT252326VHFY ,105,MUHAMMAD RAHIM ASY SYARIFI,A2.23,0,0,AGU25,170000
 20/08/2025	,FT25232VM3TZ ,105,LAUW SIN HUN,C0.01,0,0,AGU25,320000
 20/08/2025	,FT25232PG894 ,105,RINDRA ADRIANDI,209,0,0,AGU25,550000
 20/08/2025	,FT25232KW08T ,105,ISMU HANSAH,C2.03,0,0,AGU25,270000
 21/08/2025	,TT25233Z0DZR ,106,ROSITA,C1.17,0,0,JUN25,295800
 21/08/2025	,FT252331B01W,106,FAUSI,409,0,0,AGU25,459000
-21/08/2025	,FT25233ZCV5L,106,AKHMAD WAHYUDI,C3.15,0,0,APR25;MEI25;JUN25;JUL25,1020000
+21/08/2025	,FT25233ZCV5L,106,AKHMAD WAHYUDI,C3.15,0,0,APR25,MEI25,JUN25,JUL25,1020000
 21/08/2025	,FT25233MJ29Y ,106,MUHAMMAD NOOR,B2.02,0,0,AGU25,173400
 21/08/2025	,FT25233GLBKT,106,NOR HAIRI,C2.04,0,0,JUL25,275400
 21/08/2025	,TT25233L0BT7,106,BAHTIAR,B4.05,0,0,AGU25,122400
 21/08/2025	,FT2523361RF3,106,RAMLI,B1.24,0,0,JUN25,193800
 21/08/2025	,FT25233B364D ,106,RAHMANSYAH,C4.07,0,0,JUN25,220000
 21/08/2025	,FT25233NJKFH ,106,RAHMANSYAH,C4.07,0,0,JUN25,4400
-21/08/2025	,TT252337DJY2,106,AKHMAD SYARIF,B1.18,0,0,APR25;MEI25;JUN25;JUL25,775200
+21/08/2025	,TT252337DJY2,106,AKHMAD SYARIF,B1.18,0,0,APR25,MEI25,JUN25,JUL25,775200
 23/08/2025	,0,107,0,0,0,0,0,550000
 25/08/2025	,FT2523780629,108,MISRANSYAH,B4.18,0,0,JUL25,122400
-25/08/2025	,FT25237S4MGB ,108,0,0,0,0,AGU25,510000
+25/08/2025	,FT25237S4MGB ,108,RINTO,313,0,0,AGU25,510000
 25/08/2025	,FT25237RSFWF ,108,MUHAMMAD GUNTUR,C1.23,0,0,JUN25,295800
 25/08/2025	,FT25237J6FZL,108,MUHAMMAD YOGI SAPUTRO,B3.04,0,0,AGU25,153000
 25/08/2025	,FT25237WVN5V ,108,RAHMADANI,C4.21,0,0,AGU25,224400
@@ -489,8 +421,8 @@
 25/08/2025	,FT25237ZB894,108,RIKI YANDRA,C2.01,0,0,JUL25,275400
 26/08/2025	,FT252387JBRT ,109,SLAMET DWI PURWANTO,B2.14,0,0,FEB25,173400
 26/08/2025	,FT252383TSNC ,109,HARLI,C4.10,0,0,MEI25,224400
-26/08/2025	,FT252387ZS1Q ,109,M. ASRUL PAJRIN,B1.01,0,0,JUL25;AGU25,387600
-26/08/2025	,FT25238D5R14 ,109,SARBANI,C2.20,0,0,MEI25;JUN25,550800
+26/08/2025	,FT252387ZS1Q ,109,M. ASRUL PAJRIN,B1.01,0,0,JUL25,AGU25,387600
+26/08/2025	,FT25238D5R14 ,109,SARBANI,C2.20,0,0,MEI25,JUN25,550800
 26/08/2025	,FT25238CWJRS ,109,RAHMADI,C4.15,0,0,AGU25,224400
 27/08/2025	,FT252392767S ,110,MAULANA,A1.07,0,0,JUL25,193800
 27/08/2025	,FT25239JGGPF ,110,TAUFIKURAHMAN,C4.11,0,0,JUL25,224400
@@ -500,8 +432,8 @@
 27/08/2025	,FT252396XP76 ,110,MUHAMMAD ROBBY FAUZAN,212,0,0,AGU25,561000
 28/08/2025	,FT25240MFFD9 ,111,MUHAMMAD FIKRI AZHARI,208,0,0,AGU25,561000
 28/08/2025	,FT25240RZ71D,111,0,0,0,0,0,11000
-28/08/2025	,FT25240L3SH1,111,JUMANANG DEMANG,A3.13,0,0,FEB25;MAR25;APR25,459000
-28/08/2025	,FT25240HD7CY ,111,ROYKE ANTONIUS ROOROH,A3.10,0,0,JUN25;JUL25;AGU25,459000
+28/08/2025	,FT25240L3SH1,111,JUMANANG DEMANG,A3.13,0,0,FEB25,MAR25,APR25,459000
+28/08/2025	,FT25240HD7CY ,111,ROYKE ANTONIUS ROOROH,A3.10,0,0,JUN25,JUL25,AGU25,459000
 28/08/2025	,FT25240J5KYH ,111,BERRY CHRISTIAN HERLIJANTO,C2.22,0,0,MEI25,275400
 28/08/2025	,FT25240P3708 ,111,HASRUL,C3.16,0,0,AGU25,255000
 28/08/2025	,FT25240M1B6W ,111,DENNY HENDRA LESMANA,A2.10,0,0,JUN25,173400
@@ -573,7 +505,7 @@
 08/09/2025	,FT25251B4ZPD,118,SANUSI,C3.19,0,0,JUL25,255000
 08/09/2025	,TT25251KLS1P,118,KANCEL,C2.17,0,0,MAR25;APR25,550800
 08/09/2025	,FT25251FKCXQ ,118,MUHAMMAD IQBAL,A3.06,0,0,JUN25,153000
-08/09/2025	,FT25251NZT9F,118,HERRY,B2.20,DES24,173400,-,0
+08/09/2025	,FT25251NZT9F,118,HERRY,B2.20,DES24,173400,0,0
 08/09/2025	,FT25251H4FYB,118,SUBIHI YANNOOR,B2.12,0,0,SEP25,170000
 08/09/2025	,FT25251XWSBF ,118,M. EDO KASAFANI HIDAYAT,A2.22,0,0,APR25;MEI25;JUN25;JUL25,693600
 08/09/2025	,FT25251M9T3R ,118,IRFAN RIZKI FADILLAH,B2.13,0,0,SEP25,170000
@@ -761,7 +693,7 @@
 25/09/2025	,FT25268999FJ,131,HERRY,B2.20,0,0,JAN25;FEB25;MAR25,520200
 29/09/2025	,FT252724PQNX,132,RUDI,101,0,0,SEP25,612000
 29/09/2025	,FT25272LFQQJ,132,MUHAMMAD AGUS BUDIANTO,204,0,0,SEP25,561000
-29/09/2025	,FT25272DCZGG,132,0,0,0,0,SEP25,510000
+29/09/2025	,FT25272DCZGG,132,M. KASMAN,307,0,0,SEP25,510000
 29/09/2025	,FT25272L77HC,132,GARIN RUSMAN AJI,C4.17,0,0,SEP25,224400
 29/09/2025	,TT25272YPZ1T,132,HARIS SOFYAN,C4.18,0,0,FEB25;MAR25;APR25,673200
 29/09/2025	,TT25272FL5WW ,132,BAHRUL HADI,C2.19,NOP24;DES24,550800,JAN25,275400
@@ -779,146 +711,152 @@
 29/09/2025	,TT25272S1XL2,132,SEPTESA INSAN CAESAR,A3.02,0,0,JAN25;FEB25;MAR25,459000
 29/09/2025	,TT25272WJJRD,132,ZAINAL ABIDIN,A3.01,OKT24;NOP24,306000,0,0
 29/09/2025	,FT25272VM3JB,132,RINTO,313,0,0,SEP25,510000
+30/09/2025	,FT252738MSKW ,133,ANJAS ISMAIL,110,0,0,SEP25,612000
+30/09/2025	,FT25273LM55S ,133,HASRUL,C3.16,0,0,SEP25,255000
+30/09/2025	,FT25273KF5K3,133,JUMANANG DEMANG,A3.13,0,0,JUL25;AGU25;SEP25,459000
+30/09/2025	,FT252735KKC5,133,SLAMET DWI PURWANTO,B2.14,0,0,APR25;MEI25;JUN25;JUL25,693600
+30/09/2025	,FT25273W0KX8 ,133,MURNIATI,B4.10,0,0,SEP25,122400
+30/09/2025	,FT25273HWPZR ,133,MUHAMMAD,B1.20,0,0,JUL25,193800
+30/09/2025	,TT25273YDWT6 ,133,MAHDIAN NOOR,A2.24,0,0,SEP25,173400
+30/09/2025	,FT25273D93V1,133,RAMLI,B1.24,0,0,JUL25,193800
+30/09/2025	,FT25273MSNNN ,133,MUHAMMAD FIKRI AZHARI,208,0,0,SEP25,561000
+30/09/2025	,TT252738PK59,133,MUHAMMAD SAIROJI,A3.07,0,0,FEB25,MAR25,APR25,MEI25,JUN25,765000
+30/09/2025	,TT25273SBS4C ,133,SLAMET DWI PURWANTO,B2.14,DES24,173400,JAN25,173400
+30/09/2025	,TT25273S06QN ,133,AKHMAD,B3.07,0,0,FEB25,MAR25,APR25,MEI25,JUN25,765000
+30/09/2025	,TT25273KDRKY ,133,SUPIANNOR,B3.12,0,0,JAN25,FEB25,MAR25,APR25,MEI25,765000
+30/09/2025	,TT2527303ST6,133,ISMU HANSAH,C2.03,0,0,MEI25,JUN25,JUL25,826200
+30/09/2025	,TT252738FSYW ,133,EDDY JULIS,C2.12,0,0,MEI25,JUN25,JUL25,826200
+30/09/2025	,TT25273QJ8B7,133,MUHAMMAD SALEH,C2.13,0,0,APR25,MEI25,JUN25,826200
+30/09/2025	,TT25273FW0BX ,133,GARIN RUSMAN AJI,C4.17,0,0,APR25,MEI25,JUN25,673200
+30/09/2025	,TT25273XL6Q2,133,MUHAMMAD IHSAN,B3.08,0,0,MAR25,APR25,MEI25,JUN25,612000
+30/09/2025	,TT25273PQYLS ,133,PAHRURAJI,B1.14,0,0,MEI25,JUN25,JUL25,581400
+30/09/2025	,TT25273W91W9 ,133,IRFAN RIZKI FADILLAH,B2.13,0,0,MEI25,JUN25,JUL25,520200
+30/09/2025	,TT25273XPHZM ,133,MUHAMMAD YOGI SAPUTRO,B3.04,0,0,MEI25,JUN25,JUL25,459000
+
 `;
 
-    function parseCSV(str) {
-      const rows = str.trim().split("\n");
-      const headers = rows.shift().split(",");
-      return rows.map(row => {
-        const values = row.split(",");
-        let obj = {};
-        headers.forEach((h, i) => obj[h.trim()] = values[i] ? values[i].trim() : "");
-        return obj;
-      });
-    }
+    const monthNames = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 
-    let allData = parseCSV(csvData);
-    const monthNames = ["01-Januari","02-Februari","03-Maret","04-April","05-Mei","06-Juni","07-Juli","08-Agustus","09-September","10-Oktober","11-November","12-Desember"];
-
-    function populateDropdowns() {
-      const dateDropdown = document.getElementById("dateDropdown");
-      const monthDropdown = document.getElementById("monthDropdown");
-
-      const uniqueDates = [...new Set(allData.map(row => row["Tanggal Setoran"]))];
-      uniqueDates.forEach(tgl => {
-        const opt = document.createElement("option");
-        opt.value = tgl;
-        opt.textContent = tgl;
-        dateDropdown.appendChild(opt);
-      });
-
-      const uniqueMonths = [...new Set(allData.map(row => {
-        const [d,m,y] = row["Tanggal Setoran"].split("/");
-        return `${m}-${y}`;
-      }))];
-      uniqueMonths.forEach(my => {
-        const [m,y] = my.split("-");
-        const opt = document.createElement("option");
-        opt.value = my;
-        opt.textContent = `${monthNames[parseInt(m)-1].split("-")[1]} ${y}`;
-        monthDropdown.appendChild(opt);
-      });
-    }
-
-    function renderTable(data, selectedDate="", selectedMonth="") {
+    function loadData() {
       const tbody = document.querySelector("#dataTable tbody");
       tbody.innerHTML = "";
       let total2024 = 0, total2025 = 0, totalAll = 0;
+      let monthAll = 0;
+      let rowNum = 1;
 
-      data.forEach((row, index) => {
-        const j2024 = parseInt(row["Jumlah 2024"]) || 0;
-        const j2025 = parseInt(row["Jumlah 2025"]) || 0;
-        const total = j2024 + j2025;
+      const searchText = document.getElementById("searchInput").value.toLowerCase();
+      const selectedMonth = document.getElementById("monthDropdown").value;
+      const selectedDate = document.getElementById("dateDropdown").value;
 
-        total2024 += j2024;
-        total2025 += j2025;
-        totalAll += total;
+      const rows = csvData.trim().split("\n").slice(1);
+      rows.forEach(line => {
+        const parts = line.split(/[\t,]+/);
+        if (parts.length < 7) return;
 
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${row["Tanggal Setoran"]}</td>
-          <td>${row["No. Referensi IBB"]}</td>
-          <td>${row["No. STS"]}</td>
-          <td>${row["Nama Penghuni"]}</td>
-          <td>${row["No. Unit"]}</td>
-          <td>${row["Periode 2024"]}</td>
-          <td>${j2024.toLocaleString()}</td>
-          <td>${row["Periode 2025"]}</td>
-          <td>${j2025.toLocaleString()}</td>
-          <td>${total.toLocaleString()}</td>
-        `;
-        tbody.appendChild(tr);
+        const tanggal = parts[0] || "";
+        const referensi = parts[1] || "";
+        const sts = parts[2] || "";
+        const nama = parts[3] || "";
+        const unit = parts[4] || "";
+        const periode2024 = parts[5] || "";
+        const jumlah2024 = parseInt(parts[6]) || 0;
+        const periode2025 = parts.slice(7, -1).join(" ") || "";
+        const jumlah2025 = parseInt(parts[parts.length - 1]) || 0;
+        const total = jumlah2024 + jumlah2025;
+
+        const bulanAngka = parseInt(tanggal.split("/")[1] || "0");
+        const bulanNama = monthNames[bulanAngka] || "";
+
+        const cocokBulan = !selectedMonth || bulanNama === selectedMonth;
+        const cocokTanggal = !selectedDate || tanggal === selectedDate;
+        const rowString = (tanggal+referensi+sts+nama+unit+periode2024+periode2025+jumlah2024+jumlah2025).toLowerCase();
+        const cocokSearch = !searchText || rowString.includes(searchText);
+
+        if (cocokBulan && cocokTanggal && cocokSearch) {
+          total2024 += jumlah2024;
+          total2025 += jumlah2025;
+          totalAll += total;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${rowNum++}</td>
+            <td>${tanggal}</td>
+            <td>${referensi}</td>
+            <td>${sts}</td>
+            <td>${nama}</td>
+            <td>${unit}</td>
+            <td>${periode2024}</td>
+            <td>${jumlah2024.toLocaleString()}</td>
+            <td>${periode2025}</td>
+            <td>${jumlah2025.toLocaleString()}</td>
+            <td>${total.toLocaleString()}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+
+        if (selectedMonth && bulanNama === selectedMonth) {
+          monthAll += total;
+        }
       });
 
       document.getElementById("total2024").textContent = total2024.toLocaleString();
       document.getElementById("total2025").textContent = total2025.toLocaleString();
       document.getElementById("totalAll").textContent = totalAll.toLocaleString();
-
       document.getElementById("summary2024").textContent = total2024.toLocaleString();
       document.getElementById("summary2025").textContent = total2025.toLocaleString();
       document.getElementById("summaryAll").textContent = totalAll.toLocaleString();
 
-      const summaryDiv = document.getElementById("summaryByDate");
-      summaryDiv.innerHTML = "";
-      if (selectedDate) {
-        const totalByDate = data.reduce((sum, row) => {
-          return row["Tanggal Setoran"] === selectedDate
-            ? sum + (parseInt(row["Jumlah 2024"])||0) + (parseInt(row["Jumlah 2025"])||0)
-            : sum;
-        }, 0);
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<h3>Total ${selectedDate}</h3><p>${totalByDate.toLocaleString()}</p>`;
-        summaryDiv.appendChild(card);
-      } else if (selectedMonth) {
-        const totalByMonth = data.reduce((sum, row) => {
-          const [d,m,y] = row["Tanggal Setoran"].split("/");
-          return `${m}-${y}` === selectedMonth
-            ? sum + (parseInt(row["Jumlah 2024"])||0) + (parseInt(row["Jumlah 2025"])||0)
-            : sum;
-        }, 0);
-        const [m,y] = selectedMonth.split("-");
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<h3>Total Bulan ${monthNames[parseInt(m)-1].split("-")[1]} ${y}</h3><p>${totalByMonth.toLocaleString()}</p>`;
-        summaryDiv.appendChild(card);
+      // ringkasan bulan → ubah judul + angka
+      const monthTitle = document.getElementById("monthTitle");
+      if (selectedMonth) {
+        monthTitle.textContent = "Total Semua (" + selectedMonth + ")";
+      } else {
+        monthTitle.textContent = "Total Semua (Bulan)";
       }
+      document.getElementById("summaryAllMonth").textContent = monthAll.toLocaleString();
     }
 
-    document.getElementById("searchInput").addEventListener("keyup", applyFilter);
+    function resetFilter(){
+      document.getElementById("searchInput").value="";
+      document.getElementById("monthDropdown").value="";
+      document.getElementById("dateDropdown").value="";
+      loadData();
+    }
+    function applyFilter(){ loadData(); }
 
-    function applyFilter() {
-      const keyword = document.getElementById("searchInput").value.toLowerCase();
-      const selectedDate = document.getElementById("dateDropdown").value;
-      const selectedMonth = document.getElementById("monthDropdown").value;
-
-      let filtered = allData.filter(row => {
-        let matchText = Object.values(row).join(" ").toLowerCase().includes(keyword);
-
-        let matchDate = true;
-        if (selectedDate) {
-          matchDate = row["Tanggal Setoran"] === selectedDate;
-        } else if (selectedMonth) {
-          const [d,m,y] = row["Tanggal Setoran"].split("/");
-          matchDate = `${m}-${y}` === selectedMonth;
+    function initDropdowns(){
+      const rows = csvData.trim().split("\n").slice(1);
+      const bulanSet = new Set();
+      const tanggalSet = new Set();
+      rows.forEach(line=>{
+        const parts = line.split(/[\t,]+/);
+        const tgl = parts[0];
+        if(tgl){
+          tanggalSet.add(tgl);
+          const bln = parseInt(tgl.split("/")[1] || "0");
+          if(bln) bulanSet.add(monthNames[bln]);
         }
-
-        return matchText && matchDate;
       });
 
-      renderTable(filtered, selectedDate, selectedMonth);
+      const monthDropdown = document.getElementById("monthDropdown");
+      monthDropdown.innerHTML = '<option value="">-- Pilih Bulan --</option>';
+      bulanSet.forEach(b=>{
+        const opt=document.createElement("option");
+        opt.value=b; opt.textContent=b;
+        monthDropdown.appendChild(opt);
+      });
+
+      const dateDropdown = document.getElementById("dateDropdown");
+      dateDropdown.innerHTML = '<option value="">-- Pilih Tanggal Setoran --</option>';
+      tanggalSet.forEach(t=>{
+        const opt=document.createElement("option");
+        opt.value=t; opt.textContent=t;
+        dateDropdown.appendChild(opt);
+      });
     }
 
-    function resetFilter() {
-      document.getElementById("searchInput").value = "";
-      document.getElementById("dateDropdown").value = "";
-      document.getElementById("monthDropdown").value = "";
-      renderTable(allData, "", "");
-    }
-
-    populateDropdowns();
-    renderTable(allData, "", "");
+    initDropdowns();
+    loadData();
   </script>
 </body>
 </html>
