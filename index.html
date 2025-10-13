@@ -95,7 +95,7 @@
 <script>
 async function loadData(forceRefresh = false) {
   try {
-    const response = await fetch('get_data.js' + (forceRefresh ? '?t=' + new Date().getTime() : ''));
+    const response = await fetch('/api/get_data' + (forceRefresh ? '?t=' + new Date().getTime() : ''));
     const data = await response.json();
     const tbody = document.querySelector('#dataTable tbody');
     tbody.innerHTML = '';
